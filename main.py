@@ -19,13 +19,13 @@ elif season_stage == 2:
     season_type = 'Pre Season'
 
 # Fetch data
-# print('Start Update:\nUpdating Constants at ' + datetime.datetime.now().__str__())
-# get_calendar_nb_games()
-# get_calendar_game_ids()
-# generate_tonight_games()
-#
-# get_players(year)
-# get_teams(year)
+print('Start Update:\nUpdating Constants at ' + datetime.datetime.now().__str__())
+get_calendar_nb_games()
+get_calendar_game_ids()
+generate_tonight_games()
+
+get_players(year)
+get_teams(year)
 
 
 print('\nUpdating Play by play and Scoreboards at ' + datetime.datetime.now().__str__())
@@ -35,6 +35,6 @@ update_play_by_play_and_scoreboards(year)
 # gather_ttfl_box_score()
 
 print('\nUpdating Play by play (Python nba_api) ' + datetime.datetime.now().__str__())
-update_play_by_play_library(season_type=season_type)
+update_play_by_play_library(from_scratch=False, season_type=season_type)
 
 print('\nDone updating at ' + datetime.datetime.now().__str__())
