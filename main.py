@@ -34,10 +34,6 @@ print('\nUpdating Play by play and Scoreboards at ' + datetime.datetime.now().__
 update_play_by_play_and_scoreboards(year)
 
 print('\nUpdating Play by play (Python nba_api) ' + datetime.datetime.now().__str__())
-<<<<<<< HEAD
 update_play_by_play_library(year=year, from_scratch=False, season_type=season_type)
-=======
-update_play_by_play_library(from_scratch=False, season_type=season_type)
->>>>>>> 9d2c5031ceba255021bf22dd97ea138d25f0c839
 
 print('\nDone updating at ' + datetime.datetime.now().__str__())
