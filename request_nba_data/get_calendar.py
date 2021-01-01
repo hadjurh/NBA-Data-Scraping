@@ -6,13 +6,9 @@ import datetime
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
 from request_nba_data.constants import HEADERS, SCOREBOARD_URL
-from request_nba_data.get_league_info import get_league_info
 
 
-season_stage, year, display_year, current_date = get_league_info()
-
-
-def get_calendar_nb_games():
+def get_calendar_nb_games(year):
     try:
         with open(f'data/calendar/calendar_nb_games_{year}.json') as f:
             calendar_nb_games = json.load(f)
@@ -39,12 +35,12 @@ def get_calendar_nb_games():
     return calendar_requests.json()
 
 
-def load_season_dates(path_to_calendar_file=None):  # 'data/calendar/calendar_nb_games.json'
+def load_season_dates(year, path_to_calendar_file=None):  # 'data/calendar/calendar_nb_games.json'
     if path_to_calendar_file is not None:
         with open(path_to_calendar_file) as f:
             calendar = json.load(f)
     else:
-        calendar = get_calendar_nb_games()
+        calendar = get_calendar_nb_games(year)
 
     start = datetime.datetime.strptime(calendar['startDateCurrentSeason'], '%Y%m%d').date()
     end = datetime.datetime.strptime(calendar['endDate'], '%Y%m%d').date()
@@ -52,7 +48,7 @@ def load_season_dates(path_to_calendar_file=None):  # 'data/calendar/calendar_nb
     return start, end, calendar
 
 
-def get_calendar_game_ids():
+def get_calendar_game_ids(year):
     try:
         with open(f'data/calendar/calendar_game_ids_{year}.json') as f:
             calendar_game_ids = json.load(f)
@@ -62,7 +58,7 @@ def get_calendar_game_ids():
     except FileNotFoundError:
         pass
 
-    season_start, season_end, data_calendar = load_season_dates()
+    season_start, season_end, data_calendar = load_season_dates(year)
 
     current_date = season_start
 
@@ -95,16 +91,17 @@ def get_calendar_game_ids():
     return calendar_game_ids
 
 
-def generate_tonight_games(path_to_calendar_file='data/calendar/calendar_game_ids.json',
+def generate_tonight_games(year,
+                           path_to_calendar_file='data/calendar/calendar_game_ids.json',
                            today_date=datetime.datetime.utcnow().date()):
     if path_to_calendar_file is not None:
         try:
             with open('data/calendar/calendar_game_ids.json') as f:
                 data_calendar_game_ids = json.load(f)
         except FileNotFoundError:
-            data_calendar_game_ids = get_calendar_game_ids()  # Much longer
+            data_calendar_game_ids = get_calendar_game_ids(year)  # Much longer
     else:
-        data_calendar_game_ids = get_calendar_game_ids()  # Much longer
+        data_calendar_game_ids = get_calendar_game_ids(year)  # Much longer
 
     for game_date in data_calendar_game_ids.keys():
         if datetime.datetime.strptime(game_date, '%Y%m%d').date() >= today_date:
@@ -117,7 +114,7 @@ def generate_tonight_games(path_to_calendar_file='data/calendar/calendar_game_id
 
 
 if __name__ == '__main__':
-    get_calendar_nb_games()
+    get_calendar_nb_games('2020')
 
-    get_calendar_game_ids()
+    get_calendar_game_ids('2020')
     generate_tonight_games()

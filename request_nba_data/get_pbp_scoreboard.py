@@ -135,7 +135,7 @@ class Game(object):
 
 
 def update_play_by_play_and_scoreboards(year):
-    season_start, season_end, data_calendar = load_season_dates()
+    season_start, season_end, data_calendar = load_season_dates(year)
     current_date = season_start
 
     if not os.path.exists('data/play_by_play'):
@@ -163,10 +163,15 @@ def update_play_by_play_and_scoreboards(year):
                 print(current_date, game_info['gameUrlCode'])
                 current_game = Game(game_info['gameId'], current_date_nba_format)
 
-                if game_info['gameId'] not in play_by_play_ids:
-                    current_game.get_play_by_play()
-                if game_info['gameId'] not in scoreboards_ids:
-                    current_game.get_scoreboard(write_only=True)
+                if current_game.status_num == 1:
+                    print(f'{current_game.game_id} not played yet')
+                elif current_game.status_num == 2:
+                    print(f'{current_game.game_id} is being played')
+                else:
+                    if game_info['gameId'] not in play_by_play_ids:
+                        current_game.get_play_by_play()
+                    if game_info['gameId'] not in scoreboards_ids:
+                        current_game.get_scoreboard(write_only=True)
 
                 print('\n----------------\n')
 

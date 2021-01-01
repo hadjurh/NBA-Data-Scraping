@@ -13,21 +13,26 @@ from request_nba_data.get_calendar import load_season_dates
 from request_nba_data.constants import SEASONS_DATES
 
 
-def update_play_by_play_library(from_scratch=False, season_type='Regular Season'):
+def update_play_by_play_library(year=None,
+                                from_scratch=False,
+                                season_type='Regular Season'):
     if not os.path.exists('data/play_by_play_library'):
         os.makedirs('data/play_by_play_library')
 
-    # Current Season
-    end_date = datetime.date.today()
-    seasons = ['2019-20']
+    if year is not None:
+        # Current Season
+        end_date = datetime.date.today()
+        seasons = [str(year) + '-' + str(year + 1)[-2:]]
 
-    # Past
-    # from_scratch = True
-    # seasons = ['2018-19', '2017-18',
-    #            '2016-17', '2015-16',
-    #            '2014-15', '2013-14',
-    #            '2012-13', '2011-12',
-    #            '2010-11', '2009-10']
+    else:
+        # Past
+        from_scratch = True
+        seasons = ['2019-20',
+                   '2018-19', '2017-18',
+                   '2016-17', '2015-16',
+                   '2014-15', '2013-14',
+                   '2012-13', '2011-12',
+                   '2010-11', '2009-10']
 
     for season in seasons:
         season_start, season_end = SEASONS_DATES[season]['start_date'], SEASONS_DATES[season]['end_date']
@@ -37,18 +42,14 @@ def update_play_by_play_library(from_scratch=False, season_type='Regular Season'
         current_date = season_start
 
         if season_type == 'Regular Season':
-            path_to_play_by_play = 'data/play_by_play_library/play_by_play_{}.csv'.format(
-                '_' + season if season != '2019-20' else '')
-            end_date = datetime.date(2020, 8, 15)
+            path_to_play_by_play = 'data/play_by_play_library/play_by_play_{}.csv'.format(season)
+            end_date = datetime.datetime.today().date()
         elif season_type == 'Playoffs':
-            path_to_play_by_play = 'data/play_by_play_library/play_by_play_playoffs{}.csv'.format(
-                '_' + season if season != '2019-20' else '')
-            current_date = datetime.date(2020, 8, 17)
+            path_to_play_by_play = 'data/play_by_play_library/play_by_play_playoffs{}.csv'.format(season)
+            current_date = datetime.datetime.today().date()
         elif season_type == 'Play-in':
-            path_to_play_by_play = 'data/play_by_play_library/play_by_play_play_in{}.csv'.format(
-                '_' + season if season != '2019-20' else '')
-            current_date = datetime.date(2020, 8, 15)
-            end_date = datetime.date(2020, 8, 16)
+            path_to_play_by_play = 'data/play_by_play_library/play_by_play_play_in{}.csv'.format(season)
+            end_date = datetime.datetime.today().date()
 
         if not from_scratch:
             play_by_play_df = pd.read_csv(path_to_play_by_play)
@@ -63,7 +64,7 @@ def update_play_by_play_library(from_scratch=False, season_type='Regular Season'
         while current_date < end_date:
             print(current_date)
             daily_games = ScoreboardV2(game_date=str(current_date)).game_header.get_data_frame()
-            sleep(0.4)
+            sleep(0.5)
 
             for game_id, home_team_id, visitor_team_id \
                     in zip(daily_games['GAME_ID'], daily_games['HOME_TEAM_ID'], daily_games['VISITOR_TEAM_ID']):
@@ -79,7 +80,7 @@ def update_play_by_play_library(from_scratch=False, season_type='Regular Season'
 
                 play_by_play_df = play_by_play_df.append(play_by_play)
 
-                sleep(0.4)
+                sleep(0.5)
 
             current_date += datetime.timedelta(days=1)
 

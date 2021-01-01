@@ -18,6 +18,10 @@ BOXSCORE_URL = 'http://data.nba.net/10s/prod/v1/{date}/{game_id}_boxscore.json'
 PLAY_BY_PLAY_URL = 'http://data.nba.net/10s/prod/v1/{date}/{game_id}_pbp_{period_num}.json'
 
 SEASONS_DATES = {
+    '2020-21': {
+        'start_date': datetime.date(2020, 12, 22),
+        'end_date': datetime.date(2021, 5, 16)
+    },
     '2019-20': {
         'start_date': datetime.date(2019, 10, 22),
         'end_date': datetime.date(2020, 4, 15)
