@@ -16,8 +16,13 @@ PLAYERS_URL = 'http://data.nba.net/10s/prod/v1/{year}/players.json'
 TEAMS_URL = 'http://data.nba.net/10s/prod/v2/{year}/teams.json'
 BOXSCORE_URL = 'http://data.nba.net/10s/prod/v1/{date}/{game_id}_boxscore.json'
 PLAY_BY_PLAY_URL = 'http://data.nba.net/10s/prod/v1/{date}/{game_id}_pbp_{period_num}.json'
+SCHEDULE_URL = 'http://data.nba.net/prod/v1/{year}/schedule.json'
 
 SEASONS_DATES = {
+    '2021-22': {
+        'start_date': datetime.date(2021, 10, 3),
+        'end_date': datetime.date(2022, 4, 10)
+    },
     '2020-21': {
         'start_date': datetime.date(2020, 12, 22),
         'end_date': datetime.date(2021, 5, 16)

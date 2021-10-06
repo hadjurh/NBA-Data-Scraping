@@ -5,7 +5,7 @@ import sys
 import datetime
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-from request_nba_data.constants import HEADERS, SCOREBOARD_URL
+from request_nba_data.constants import HEADERS, SCOREBOARD_URL, SEASONS_DATES, SCHEDULE_URL
 
 
 def get_calendar_nb_games(year):
@@ -42,13 +42,16 @@ def load_season_dates(year, path_to_calendar_file=None):  # 'data/calendar/calen
     else:
         calendar = get_calendar_nb_games(year)
 
-    start = datetime.datetime.strptime(calendar['startDateCurrentSeason'], '%Y%m%d').date()
-    end = datetime.datetime.strptime(calendar['endDate'], '%Y%m%d').date()
+    start = SEASONS_DATES[f'{year}-{str(int(year) + 1)[2:]}']['start_date']
+    end = SEASONS_DATES[f'{year}-{str(int(year) + 1)[2:]}']['end_date']
 
     return start, end, calendar
 
 
 def get_calendar_game_ids(year):
+    # Using http://data.nba.net/prod/v1/{year}/schedule.json,
+    # which only requires 1 request.
+
     try:
         with open(f'data/calendar/calendar_game_ids_{year}.json') as f:
             calendar_game_ids = json.load(f)
@@ -58,29 +61,20 @@ def get_calendar_game_ids(year):
     except FileNotFoundError:
         pass
 
-    season_start, season_end, data_calendar = load_season_dates(year)
+    schedule_requests = requests.get(SCHEDULE_URL.format(year=year),
+                                     headers=HEADERS,
+                                     proxies=None).json()['league']['standard']
+    schedule_dates_nba_format_list = sorted(list(set([g['startDateEastern'] for g in schedule_requests])))
 
-    current_date = season_start
-
-    calendar_game_ids = dict()
-
-    while current_date <= season_end:
-        current_date_nba_format = ''.join(str(current_date).split('-'))
-
-        if current_date_nba_format in data_calendar.keys() and data_calendar[current_date_nba_format] > 0:
-            # Contains games' info (id, season stage id)
-            daily_score_board = requests.get(SCOREBOARD_URL.format(date=current_date_nba_format),
-                                             headers=HEADERS,
-                                             proxies=None).json()
-
-            calendar_game_ids[current_date_nba_format] = [{'gameId': game['gameId'],
-                                                           'seasonStageId': game['seasonStageId'],
-                                                           'gameUrlCode': game['gameUrlCode'],
-                                                           'statusNum': game['statusNum'],
-                                                           'startTimeUTC': game['startTimeUTC']}
-                                                          for game in daily_score_board['games']]
-
-        current_date += datetime.timedelta(days=1)
+    calendar_game_ids = {
+        date_nba_format: [{'gameId': game['gameId'],
+                           'seasonStageId': game['seasonStageId'],
+                           'gameUrlCode': game['gameUrlCode'],
+                           'statusNum': game['statusNum'],
+                           'startTimeUTC': game['startTimeUTC']} for game in schedule_requests if
+                          game['startDateEastern'] == date_nba_format]
+        for date_nba_format in schedule_dates_nba_format_list
+    }
 
     calendar_game_ids['updateTime'] = datetime.datetime.now().__str__()
 
@@ -114,7 +108,7 @@ def generate_tonight_games(year,
 
 
 if __name__ == '__main__':
-    get_calendar_nb_games('2020')
+    get_calendar_nb_games('2021')
 
-    get_calendar_game_ids('2020')
-    generate_tonight_games()
+    get_calendar_game_ids('2021')
+    generate_tonight_games('2021')

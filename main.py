@@ -9,7 +9,7 @@ from request_nba_data.get_pbp_scoreboard import update_play_by_play_and_scoreboa
 from request_nba_data.get_pbp_nba_api_library import update_play_by_play_library
 
 
-# Set constants
+# Set constants, synchronized with data.nba.net
 season_stage, year, display_year, current_date = get_league_info()
 
 season_type = 'Regular Season'
@@ -21,7 +21,9 @@ elif season_stage == 5:
     season_type = 'Play-in'
 
 # Fetch data
-print('Start Update:\nUpdating Constants at ' + datetime.datetime.now().__str__())
+print(f'\n---------- Start Update ----------\n'
+      f'Season type: {season_type}; Year: {year}; Display year: {display_year}; NBA API Date {current_date}\n'
+      f'Updating Constants at {datetime.datetime.now()}\n')
 
 get_calendar_nb_games(year)
 get_calendar_game_ids(year)
