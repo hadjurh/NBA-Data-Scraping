@@ -20,7 +20,7 @@ SCHEDULE_URL = 'http://data.nba.net/prod/v1/{year}/schedule.json'
 
 SEASONS_DATES = {
     '2021-22': {
-        'start_date': datetime.date(2021, 10, 3),
+        'start_date': datetime.date(2021, 10, 19),
         'end_date': datetime.date(2022, 4, 10)
     },
     '2020-21': {
