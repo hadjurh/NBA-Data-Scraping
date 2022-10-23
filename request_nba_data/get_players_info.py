@@ -16,10 +16,10 @@ def get_players(year):
     players_data = players_request.json()
     players_data['updateTime'] = str(datetime.datetime.now())[:19]
 
-    if not os.path.exists('data/players'):
-        os.makedirs('data/players')
+    if not os.path.exists(f'data/{year}/players'):
+        os.makedirs(f'data/{year}/players')
 
-    with open(f'data/players/players_{year}.json', 'w', encoding='utf-8') as f:
+    with open(f'data/{year}/players/players_{year}.json', 'w', encoding='utf-8') as f:
         json.dump(players_data, f, ensure_ascii=False, indent=4)
 
     print('Players updated')

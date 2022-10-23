@@ -16,10 +16,10 @@ def get_teams(year):
     teams_data = teams_request.json()
     teams_data['updateTime'] = str(datetime.datetime.now())[:19]
 
-    if not os.path.exists('data/teams'):
-        os.makedirs('data/teams')
+    if not os.path.exists(f'data/{year}/teams'):
+        os.makedirs(f'data/{year}/teams')
 
-    with open(f'data/teams/teams_{year}.json', 'w', encoding='utf-8') as f:
+    with open(f'data/{year}/teams/teams_{year}.json', 'w', encoding='utf-8') as f:
         json.dump(teams_data, f, ensure_ascii=False, indent=4)
 
     print('Teams updated')
