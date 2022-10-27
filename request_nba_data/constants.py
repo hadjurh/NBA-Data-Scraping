@@ -11,14 +11,18 @@ HEADERS = {
 }
 
 GLOSSARY_URL = 'http://data.nba.net/10s/prod/v1/today.json'
-SCOREBOARD_URL = 'http://data.nba.net/10s/prod/v2/{date}/scoreboard.json'
+# SCOREBOARD_URL = 'http://data.nba.net/10s/prod/v2/{date}/scoreboard.json'
 PLAYERS_URL = 'http://data.nba.net/10s/prod/v1/{year}/players.json'
 TEAMS_URL = 'http://data.nba.net/10s/prod/v2/{year}/teams.json'
-BOXSCORE_URL = 'http://data.nba.net/10s/prod/v1/{date}/{game_id}_boxscore.json'
-PLAY_BY_PLAY_URL = 'http://data.nba.net/10s/prod/v1/{date}/{game_id}_pbp_{period_num}.json'
+BOXSCORE_URL = 'https://cdn.nba.com/static/json/liveData/boxscore/boxscore_{game_id}.json'
+PLAY_BY_PLAY_URL = 'https://cdn.nba.com/static/json/liveData/playbyplay/playbyplay_{game_id}.json'
 SCHEDULE_URL = 'http://data.nba.net/prod/v1/{year}/schedule.json'
 
 SEASONS_DATES = {
+    '2022-23': {
+        'start_date': datetime.date(2022, 10, 18),
+        'end_date': datetime.date(2023, 4, 9)
+    },
     '2021-22': {
         'start_date': datetime.date(2021, 10, 19),
         'end_date': datetime.date(2022, 4, 10)

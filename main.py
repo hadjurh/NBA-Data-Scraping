@@ -6,11 +6,10 @@ from request_nba_data.get_players_info import get_players
 from request_nba_data.get_teams_info import get_teams
 
 from request_nba_data.get_pbp_scoreboard import update_play_by_play_and_scoreboards
-from request_nba_data.get_pbp_nba_api_library import update_play_by_play_library
 
 
 # Set constants, synchronized with data.nba.net
-season_stage, year, display_year, current_date = get_league_info()
+season_stage, year, display_year, current_date = get_league_info()  # To be monitored: nba.net
 
 season_type = 'Regular Season'
 if season_stage == 4:
@@ -34,8 +33,5 @@ get_teams(year)
 
 print('\nUpdating Play by play and Scoreboards at ' + datetime.datetime.now().__str__())
 update_play_by_play_and_scoreboards(year)
-
-print('\nUpdating Play by play (Python nba_api) ' + datetime.datetime.now().__str__())
-update_play_by_play_library(year=year, from_scratch=False, season_type=season_type)
 
 print('\nDone updating at ' + datetime.datetime.now().__str__())
