@@ -1,6 +1,4 @@
-from nba_api.live.nba.endpoints import boxscore, scoreboard
+from nba_api.stats.endpoints.teamdashboardbylastngames import TeamDashboardByLastNGames
 
-# Today's Score Board
-games = scoreboard.ScoreBoard()
-
-# print(games.get_dict()['game']['actions'])
+# team_dashboard = TeamDashboardByLastNGames()
+# print(r)

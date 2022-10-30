@@ -79,9 +79,9 @@ class Game(object):
             return play_by_play_df
 
 
-def update_play_by_play_and_scoreboards(year):
+def update_play_by_play_and_scoreboards(year, date):
     season_start, season_end, data_calendar = load_season_dates(year)
-    current_date = season_start
+    current_date = date if date is not None else season_start
 
     path_to_pbp = f'data/{year}/play_by_play'
     path_to_scoreboards = f'data/{year}/scoreboards'
