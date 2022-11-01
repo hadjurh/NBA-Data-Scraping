@@ -9,6 +9,9 @@ __pycache__/
 # IDE
 .idea
 
+# Notebook
+.ipynb_checkpoints
+
 # Project
 data/
 venv/

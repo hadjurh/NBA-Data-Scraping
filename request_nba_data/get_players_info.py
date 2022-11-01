@@ -5,9 +5,10 @@ import sys
 import datetime
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-from request_nba_data.constants import HEADERS, PLAYERS_URL
+from request_nba_data.constants import HEADERS
 
 
+# Outdated
 def get_players(year):
     players_request = requests.get(PLAYERS_URL.format(year=year),
                                    headers=HEADERS,

@@ -79,13 +79,13 @@ class Game(object):
             return play_by_play_df
 
 
-def update_play_by_play_and_scoreboards(year):
-    season_start, season_end, data_calendar = load_season_dates(year)
-    current_date = season_start
+def update_play_by_play_and_scoreboards(year, date):
+    season_start, season_end = load_season_dates(year)
+    current_date = date if date is not None else season_start
 
     path_to_pbp = f'data/{year}/play_by_play'
     path_to_scoreboards = f'data/{year}/scoreboards'
-    path_to_calendar_game_ids = f'data/{year}/calendar/calendar_game_ids_{year}.json'
+    path_to_calendar_game_ids = f'data/{year}/calendar/calendar_{year}.json'
 
     if not os.path.exists(path_to_pbp):
         os.makedirs(path_to_pbp)
@@ -109,7 +109,7 @@ def update_play_by_play_and_scoreboards(year):
                     # Ignore games that have already been stored
                     continue
 
-                print(current_date, game_info['gameUrlCode'])
+                print(current_date, game_info['gameCode'])
                 current_game = Game(game_info['gameId'], current_date_nba_format, year)
 
                 if current_game.status_num == 1:
