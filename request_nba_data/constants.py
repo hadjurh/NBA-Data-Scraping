@@ -10,13 +10,13 @@ HEADERS = {
     'Connection': 'keep-alive'
 }
 
-GLOSSARY_URL = 'http://data.nba.net/10s/prod/v1/today.json'
-# SCOREBOARD_URL = 'http://data.nba.net/10s/prod/v2/{date}/scoreboard.json'
-PLAYERS_URL = 'http://data.nba.net/10s/prod/v1/{year}/players.json'
-TEAMS_URL = 'http://data.nba.net/10s/prod/v2/{year}/teams.json'
+GLOSSARY_URL = 'https://cdn.nba.com/static/json/staticData/scheduleLeagueV2.json'
 BOXSCORE_URL = 'https://cdn.nba.com/static/json/liveData/boxscore/boxscore_{game_id}.json'
 PLAY_BY_PLAY_URL = 'https://cdn.nba.com/static/json/liveData/playbyplay/playbyplay_{game_id}.json'
-SCHEDULE_URL = 'http://data.nba.net/prod/v1/{year}/schedule.json'
+# SCOREBOARD_URL = 'http://data.nba.net/10s/prod/v2/{date}/scoreboard.json'
+# PLAYERS_URL = 'http://data.nba.net/10s/prod/v1/{year}/players.json'
+# TEAMS_URL = 'http://data.nba.net/10s/prod/v2/{year}/teams.json'
+# SCHEDULE_URL = 'http://data.nba.net/prod/v1/{year}/schedule.json'
 
 SEASONS_DATES = {
     '2022-23': {

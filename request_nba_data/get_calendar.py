@@ -5,9 +5,10 @@ import sys
 import datetime
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-from request_nba_data.constants import HEADERS, SEASONS_DATES, SCHEDULE_URL
+from request_nba_data.constants import HEADERS, SEASONS_DATES
 
 
+# Outdated
 def get_calendar_nb_games(year):
     path_to_calendar_nb_games = f'data/{year}/calendar/calendar_nb_games_{year}.json'
     try:
@@ -36,17 +37,10 @@ def get_calendar_nb_games(year):
     return calendar_requests.json()
 
 
-def load_season_dates(year, path_to_calendar_file=None):  # 'data/calendar/calendar_nb_games.json'
-    if path_to_calendar_file is not None:
-        with open(path_to_calendar_file) as f:
-            calendar = json.load(f)
-    else:
-        calendar = get_calendar_nb_games(year)
-
+def load_season_dates(year):
     start = SEASONS_DATES[f'{year}-{str(int(year) + 1)[2:]}']['start_date']
     end = SEASONS_DATES[f'{year}-{str(int(year) + 1)[2:]}']['end_date']
-
-    return start, end, calendar
+    return start, end
 
 
 def get_calendar_game_ids(year):
