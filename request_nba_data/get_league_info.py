@@ -9,7 +9,7 @@ from request_nba_data.constants import GLOSSARY_URL, HEADERS
 
 
 def get_glossary_info():
-    return requests.get(GLOSSARY_URL).json()
+    return requests.get(GLOSSARY_URL, headers=HEADERS, timeout=3).json()
 
 
 def get_league_info():

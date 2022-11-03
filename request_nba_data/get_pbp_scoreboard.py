@@ -13,9 +13,9 @@ from request_nba_data.constants import HEADERS, BOXSCORE_URL, PLAY_BY_PLAY_URL
 from request_nba_data.get_calendar import load_season_dates
 
 
-def request_data(game, url, folder):
+def request_data(game, url, folder, headers=None):
     if not os.path.isfile(f'{folder}/{game.game_id}.json'):
-        request = requests.get(url)
+        request = requests.get(url, headers=headers, timeout=3)
         data_dict = request.json()
 
         if not os.path.exists(f'{folder}'):
@@ -46,7 +46,7 @@ class Game(object):
                f'Clock: {self.game_info["clock"]}'
 
     def _get_uptodate_game_info(self):
-        request = requests.get(BOXSCORE_URL.format(game_id=self.game_id)).json()
+        request = requests.get(BOXSCORE_URL.format(game_id=self.game_id), headers=HEADERS, timeout=3).json()
 
         self.game_info = request['game']
         self.game_url_code = self.game_info['gameCode']
@@ -62,7 +62,8 @@ class Game(object):
         :return:
         """
         scoreboards_dict = request_data(self, BOXSCORE_URL.format(game_id=self.game_id),
-                                        folder=f'data/{self.year}/scoreboards')
+                                        folder=f'data/{self.year}/scoreboards',
+                                        headers=HEADERS)
 
         if print_update_done and scoreboards_dict is not None:
             print(f'Scoreboard {self.game_id} updated')
@@ -71,7 +72,8 @@ class Game(object):
     def get_play_by_play(self, print_update_done=True):
         play_by_play_dict = request_data(self,
                                          PLAY_BY_PLAY_URL.format(game_id=self.game_id),
-                                         folder=f'data/{self.year}/play_by_play')
+                                         folder=f'data/{self.year}/play_by_play',
+                                         headers=HEADERS)
 
         if print_update_done and play_by_play_dict is not None:
             print(f'Play by play {self.game_id} updated')
@@ -92,8 +94,8 @@ def update_play_by_play_and_scoreboards(year, date):
     if not os.path.exists(path_to_scoreboards):
         os.makedirs(path_to_scoreboards)
 
-    play_by_play_ids = [re.findall(r'\d+', pbp_file)[0] for pbp_file in glob(f'{path_to_scoreboards}/*.json')]
-    scoreboards_ids = [re.findall(r'\d+', sb_file)[0] for sb_file in glob(f'{path_to_scoreboards}/*.json')]
+    play_by_play_ids = [re.findall(r'\d+', pbp_file)[1] for pbp_file in glob(f'{path_to_scoreboards}/*.json')]
+    scoreboards_ids = [re.findall(r'\d+', sb_file)[1] for sb_file in glob(f'{path_to_scoreboards}/*.json')]
 
     with open(path_to_calendar_game_ids) as f:
         data_calendar_game_ids = json.load(f)

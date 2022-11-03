@@ -1,10 +1,10 @@
 import datetime
 from request_nba_data.get_league_info import get_league_info
-
 from request_nba_data.get_pbp_scoreboard import update_play_by_play_and_scoreboards
 
 
 # Set constants and get calendar
+print(f'\n---------- Start Update ----------\n')
 season_stage, year, display_year, current_date, schedule = get_league_info()
 
 season_type = 'Regular Season'
@@ -16,8 +16,7 @@ elif season_stage == 5:
     season_type = 'Play-in'
 
 # Fetch data
-print(f'\n---------- Start Update ----------\n'
-      f'Season type: {season_type}; Year: {year}; Display year: {display_year}; NBA API Date {current_date}\n'
+print(f'Season type: {season_type}; Year: {year}; Display year: {display_year}; NBA API Date {current_date}\n'
       f'Updating Constants at {datetime.datetime.now()}\n')
 
 print('\nUpdating Play by play and Scoreboards at ' + datetime.datetime.now().__str__())
