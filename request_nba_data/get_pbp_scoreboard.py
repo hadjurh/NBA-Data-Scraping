@@ -114,7 +114,7 @@ def update_play_by_play_and_scoreboards(year, date):
                 print(current_date, game_info['gameCode'])
                 try:
                     current_game = Game(game_info['gameId'], current_date_nba_format, year)
-                except (requests.exceptions.JSONDecodeError, json.decoder.JSONDecodeError):
+                except (json.decoder.JSONDecodeError):
                     print(f"{game_info['gameCode']} ignored (JSONDecodeError)")
                     continue
 
