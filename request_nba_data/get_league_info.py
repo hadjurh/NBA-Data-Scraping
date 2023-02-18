@@ -16,9 +16,14 @@ def get_league_info():
     glossary = get_glossary_info()
 
     league_schedule = glossary['leagueSchedule']['gameDates']
-    league_schedule = [{'gameDate': datetime.strptime(s['gameDate'], '%m/%d/%Y %H:%M:%S %p').date(),
+    try:
+        league_schedule = [{'gameDate': datetime.strptime(s['gameDate'], '%m/%d/%Y %H:%M:%S %p').date(),
                         'games': s['games']}
-                       for s in league_schedule]
+                         for s in league_schedule]
+    except ValueError:
+        league_schedule = [{'gameDate': datetime.strptime(s['gameDate'], '%m/%d/%Y %H:%M:%S').date(),
+                            'games': s['games']}
+                           for s in league_schedule]
     today_date = datetime.today().date()
     games_within_range = [s['games'] for s in league_schedule if
                           today_date - timedelta(days=3) <= s['gameDate'] <= today_date + timedelta(days=3)]
