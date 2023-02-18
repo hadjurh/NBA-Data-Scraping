@@ -20,7 +20,7 @@ print(f'Season type: {season_type}; Year: {year}; Display year: {display_year}; 
       f'Updating Constants at {datetime.datetime.now()}\n')
 
 print('\nUpdating Play by play and Scoreboards at ' + datetime.datetime.now().__str__())
-update_play_by_play_and_scoreboards(year, datetime.datetime.today().date() - datetime.timedelta(days=4))
+update_play_by_play_and_scoreboards(year, datetime.datetime.today().date() - datetime.timedelta(days=8))
 # update_play_by_play_and_scoreboards(year, None)
 
 print('\nDone updating at ' + datetime.datetime.now().__str__())
