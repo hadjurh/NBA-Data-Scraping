@@ -5,7 +5,7 @@ import sys
 import datetime
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.realpath(__file__))))
-from request_nba_data.constants import HEADERS, SEASONS_DATES
+from request_nba_data.constants import HEADERS, SEASONS_DATES, GLOSSARY_URL
 
 
 # Outdated
@@ -56,19 +56,25 @@ def get_calendar_game_ids(year):
     except FileNotFoundError:
         pass
 
-    schedule_requests = requests.get(SCHEDULE_URL.format(year=year),
+    schedule_requests = requests.get(GLOSSARY_URL,
                                      headers=HEADERS,
-                                     proxies=None).json()['league']['standard']
-    schedule_dates_nba_format_list = sorted(list(set([g['startDateEastern'] for g in schedule_requests])))
+                                     proxies=None).json()['leagueSchedule']['gameDates']
+
+
 
     calendar_game_ids = {
-        date_nba_format: [{'gameId': game['gameId'],
-                           'seasonStageId': game['seasonStageId'],
-                           'gameUrlCode': game['gameUrlCode'],
-                           'statusNum': game['statusNum'],
-                           'startTimeUTC': game['startTimeUTC']} for game in schedule_requests if
-                          game['startDateEastern'] == date_nba_format]
-        for date_nba_format in schedule_dates_nba_format_list
+        datetime.datetime.strptime(date_games['gameDate'], '%m/%d/%Y %H:%M:%S').date().__str__().replace('-', ''):
+            [
+                {
+                    'gameId': game['gameId'],
+                           'gameCode': game['gameCode'],
+                           'statusNum': game['gameStatus'],
+                           'startDateTimeUTC': str(datetime.datetime.strptime(
+                               game['gameDateTimeUTC'], '%Y-%m-%dT%H:%M:%SZ'))
+                }
+                for game in date_games['games']
+             ]
+        for date_games in schedule_requests
     }
 
     calendar_game_ids['updateTime'] = datetime.datetime.now().__str__()
@@ -103,7 +109,7 @@ def generate_tonight_games(year,
 
 
 if __name__ == '__main__':
-    year = 2022
-    get_calendar_nb_games(year)
+    year = 2023
+    # get_calendar_nb_games(year)
     get_calendar_game_ids(year)
-    generate_tonight_games(year, f'data/calendar/{year}/calendar_game_ids_{year}.json')
+    # generate_tonight_games(year, f'data/calendar/{year}/calendar_game_ids_{year}.json')

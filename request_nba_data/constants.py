@@ -21,6 +21,10 @@ PLAY_BY_PLAY_URL = 'https://cdn.nba.com/static/json/liveData/playbyplay/playbypl
 # SCHEDULE_URL = 'http://data.nba.net/prod/v1/{year}/schedule.json'
 
 SEASONS_DATES = {
+    '2023-24': {
+        'start_date': datetime.date(2022, 10, 24),
+        'end_date': datetime.date(2023, 4, 14)
+    },
     '2022-23': {
         'start_date': datetime.date(2022, 10, 18),
         'end_date': datetime.date(2023, 4, 9)
