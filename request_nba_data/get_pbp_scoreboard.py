@@ -107,7 +107,7 @@ def update_play_by_play_and_scoreboards(year, date):
             for game_info in data_calendar_game_ids[current_date_nba_format]:
 
                 if game_info['gameId'] in play_by_play_ids and game_info['gameId'] in scoreboards_ids or \
-                        game_info['gameId'][:3] not in ['002', '004', '005']:  # '005' : Play-in; '004' : Playoffs
+                        game_info['gameId'][:3] not in ['002', '004', '005', '006']:  # '005': Play-in; '004': Playoffs; '006': In-Season Final
                     # Ignore games that have already been stored
                     continue
 
